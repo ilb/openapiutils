@@ -61,7 +61,10 @@ public class ModelConverterImpl implements ModelConverter {
             if (_type != null) {
                 Class<?> cls = _type.getRawClass();
                 if (cls.getPackage() != null && ignorePackage.stream().anyMatch(s -> s.contains(cls.getPackage().getName()))) {
-                    return null;
+                    //return null;
+                    Schema schema = new Schema();
+                    schema.setType("object");
+                    return schema;
                 }
             }
         }
