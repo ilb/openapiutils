@@ -86,7 +86,7 @@ public class ModelConverterImpl implements ModelConverter {
 
     private Properties loadProperties() {
         Properties props = new Properties();
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream("common-openapi.properties")) {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("openapiutils.properties")) {
             if (is != null) {
                 props.load(is);
             }
