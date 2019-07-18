@@ -30,7 +30,7 @@
     </scm>
     -->
     <scm>
-        <connection>scm:svn:https://svn.ilb.ru/repos/openapiutils/trunk</connection>
+        <connection>scm:svn:https://svn.ilb.ru/repos/${project.name}/trunk</connection>
         <url>https://svn.ilb.ru/viewvc/${project.name}/</url>
     </scm>
     <properties>
