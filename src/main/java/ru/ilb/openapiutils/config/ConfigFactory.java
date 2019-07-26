@@ -34,7 +34,7 @@ public class ConfigFactory {
     public static Config getConfig() {
         Config config = new Config();
         config.setIgnorePackage(getListProperty("generator.ignorePackage", null));
-        config.setAutotags(getBooleanProperty("generator.autotags", false));
+        config.setAutoTags(getBooleanProperty("generator.autoTags", true));
 
         LOG.log(Level.FINE, config.toString());
         return config;
