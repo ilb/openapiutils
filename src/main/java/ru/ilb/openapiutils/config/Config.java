@@ -31,7 +31,7 @@ public class Config {
     /**
      * autotag operation based on first path component
      */
-    private boolean autotags;
+    private boolean autoTags;
 
     public List<String> getIgnorePackage() {
         return ignorePackage;
@@ -42,16 +42,16 @@ public class Config {
     }
 
     public boolean getAutotags() {
-        return autotags;
+        return autoTags;
     }
 
-    public void setAutotags(boolean autotags) {
-        this.autotags = autotags;
+    public void setAutoTags(boolean autoTags) {
+        this.autoTags = autoTags;
     }
 
     @Override
     public String toString() {
-        return "Config{" + "ignorePackage=" + ignorePackage + ", autotags=" + autotags + '}';
+        return "Config{" + "ignorePackage=" + ignorePackage + ", autotags=" + autoTags + '}';
     }
 
 }

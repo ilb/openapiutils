@@ -56,7 +56,7 @@ public class OpenAPISpecFilterImpl implements OpenAPISpecFilter {
     @Override
     public Optional<Operation> filterOperation(Operation operation, ApiDescription api, Map<String, List<String>> params, Map<String, String> cookies, Map<String, List<String>> headers) {
 
-        if (config.getAutotags() && api.getPath() != null) {
+        if (config.getAutotags() && (operation.getTags()==null || operation.getTags().isEmpty()) && api.getPath() != null) {
             String[] pathItems = api.getPath().split("/");
             if (pathItems.length > 1) {
                 String tag = pathItems[1];
