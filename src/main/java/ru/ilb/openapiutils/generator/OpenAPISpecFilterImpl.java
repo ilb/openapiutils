@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ru.ilb.openapiutils.config.Config;
+import ru.ilb.openapiutils.config.ConfigFactory;
 
 /**
  *
@@ -38,6 +40,8 @@ import java.util.logging.Logger;
 public class OpenAPISpecFilterImpl implements OpenAPISpecFilter {
 
     static final Logger LOG = Logger.getLogger(OpenAPISpecFilterImpl.class.getName());
+
+    private final Config config = ConfigFactory.getConfig();
 
     @Override
     public Optional<OpenAPI> filterOpenAPI(OpenAPI openAPI, Map<String, List<String>> params, Map<String, String> cookies, Map<String, List<String>> headers) {
@@ -51,6 +55,15 @@ public class OpenAPISpecFilterImpl implements OpenAPISpecFilter {
 
     @Override
     public Optional<Operation> filterOperation(Operation operation, ApiDescription api, Map<String, List<String>> params, Map<String, String> cookies, Map<String, List<String>> headers) {
+
+        if (config.getAutotags() && api.getPath() != null) {
+            String[] pathItems = api.getPath().split("/");
+            if (pathItems.length > 1) {
+                String tag = pathItems[1];
+                operation.addTagsItem(tag);
+                LOG.log(Level.INFO, () -> "filterOperation operationId={0}" + operation.getOperationId() + " added tag " + tag);
+            }
+        }
         return Optional.of(operation);
     }
 
@@ -83,6 +96,7 @@ public class OpenAPISpecFilterImpl implements OpenAPISpecFilter {
     /**
      * filterResponse actions
      * 1. set default type "object" for application/json
+     *
      * @param response
      * @param operation
      * @param api
@@ -95,7 +109,7 @@ public class OpenAPISpecFilterImpl implements OpenAPISpecFilter {
     public Optional<ApiResponse> filterResponse(ApiResponse response, Operation operation, ApiDescription api, Map<String, List<String>> params, Map<String, String> cookies, Map<String, List<String>> headers) {
         MediaType mt = response.getContent().get("application/json");
         if (mt != null) {
-            if (mt.getSchema()==null) {
+            if (mt.getSchema() == null) {
                 Schema schema = new Schema();
                 schema.setType("object");
                 mt.setSchema(schema);
