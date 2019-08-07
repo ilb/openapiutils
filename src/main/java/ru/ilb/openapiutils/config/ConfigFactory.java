@@ -33,8 +33,8 @@ public class ConfigFactory {
 
     public static Config getConfig() {
         Config config = new Config();
-        config.setIgnorePackage(getListProperty("generator.ignorePackage", null));
-        config.setAutoTags(getBooleanProperty("generator.autoTags", true));
+        config.setIgnorePackage(getListProperty("ignorePackage", null));
+        config.setAutoTags(getBooleanProperty("autoTags", true));
 
         LOG.log(Level.FINE, config.toString());
         return config;
