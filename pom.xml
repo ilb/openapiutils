@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>ru.ilb.openapiutils</groupId>
     <artifactId>openapiutils</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
     <name>openapiutils</name>
     <description>openapiutils objects</description>
@@ -30,8 +30,8 @@
     </scm>
     -->
     <scm>
-        <connection>scm:svn:https://svn.ilb.ru/repos/${project.name}/trunk</connection>
-        <url>https://svn.ilb.ru/viewvc/${project.name}/</url>
+        <connection>scm:svn:https://svn.ilb.ru/repos/${project.name}/tags/openapiutils-1.1</connection>
+        <url>https://svn.ilb.ru/viewvc/${project.name}/tags/openapiutils-1.1</url>
     </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
