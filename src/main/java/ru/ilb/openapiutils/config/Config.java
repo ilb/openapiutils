@@ -33,6 +33,11 @@ public class Config {
      */
     private boolean autoTags;
 
+    /**
+     * remove unreferenced schemas/classes. Parameter for OpenAPISpecFilterImpl
+     */
+    private boolean removeUnreferencedDefinitions;
+
     public List<String> getIgnorePackage() {
         return ignorePackage;
     }
@@ -49,9 +54,16 @@ public class Config {
         this.autoTags = autoTags;
     }
 
-    @Override
-    public String toString() {
-        return "Config{" + "ignorePackage=" + ignorePackage + ", autotags=" + autoTags + '}';
+    public boolean isRemoveUnreferencedDefinitions() {
+        return removeUnreferencedDefinitions;
     }
 
+    public void setRemoveUnreferencedDefinitions(boolean removeUnreferencedDefinitions) {
+        this.removeUnreferencedDefinitions = removeUnreferencedDefinitions;
+    }
+
+    @Override
+    public String toString() {
+        return "Config{" + "ignorePackage=" + ignorePackage + ", autoTags=" + autoTags + ", removeUnreferencedDefinitions=" + removeUnreferencedDefinitions + '}';
+    }
 }

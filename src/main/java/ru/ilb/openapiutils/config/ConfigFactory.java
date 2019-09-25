@@ -35,6 +35,7 @@ public class ConfigFactory {
         Config config = new Config();
         config.setIgnorePackage(getListProperty("ignorePackage", null));
         config.setAutoTags(getBooleanProperty("autoTags", true));
+        config.setRemoveUnreferencedDefinitions(getBooleanProperty("removeUnreferencedDefinitions", false));
 
         LOG.log(Level.FINE, config.toString());
         return config;

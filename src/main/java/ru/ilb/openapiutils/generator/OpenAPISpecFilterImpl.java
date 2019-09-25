@@ -134,7 +134,7 @@ public class OpenAPISpecFilterImpl implements OpenAPISpecFilter {
 
     @Override
     public boolean isRemovingUnreferencedDefinitions() {
-        return true;
+        return config.isRemoveUnreferencedDefinitions();
     }
 
 }

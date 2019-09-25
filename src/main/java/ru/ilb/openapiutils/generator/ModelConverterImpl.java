@@ -43,10 +43,15 @@ public class ModelConverterImpl implements ModelConverter {
 
     @Override
     public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
+        JavaType _type = Json.mapper().constructType(type.getType());
+        Class<?> cls = _type != null ? _type.getRawClass() : null;
+
+        if (cls != null) {
+            LOG.log(Level.FINE, "resolve class={0}", cls.getCanonicalName());
+        }
+
         if (config.getIgnorePackage() != null) {
-            JavaType _type = Json.mapper().constructType(type.getType());
-            if (_type != null) {
-                Class<?> cls = _type.getRawClass();
+            if (cls != null) {
                 if (cls.getPackage() != null && config.getIgnorePackage().stream().anyMatch(s -> s.contains(cls.getPackage().getName()))) {
                     LOG.log(Level.FINE, "skip class={0}", cls.getCanonicalName());
                     Schema schema = new Schema();
@@ -65,11 +70,11 @@ public class ModelConverterImpl implements ModelConverter {
             return schema;
         }
         if (chain.hasNext()) {
-            return chain.next().resolve(type, context, chain);
+            Schema schema = chain.next().resolve(type, context, chain);
+            return schema;
         } else {
             return null;
         }
     }
-
 
 }
