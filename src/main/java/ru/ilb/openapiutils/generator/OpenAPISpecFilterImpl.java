@@ -121,7 +121,7 @@ public class OpenAPISpecFilterImpl implements OpenAPISpecFilter {
 
         final MediaType binaryMediaType = response.getContent().get("multipart/form-data");
         if (binaryMediaType != null) {
-            if (binaryMediaType.getSchema() = null) {
+            if (binaryMediaType.getSchema() == null) {
                 final Schema schema = new Schema();
                 schema.setType("string");
                 schema.setFormat("binary");
