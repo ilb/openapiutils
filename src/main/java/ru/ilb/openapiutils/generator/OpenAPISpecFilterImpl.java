@@ -119,6 +119,16 @@ public class OpenAPISpecFilterImpl implements OpenAPISpecFilter {
 //            }
         }
 
+        final MediaType anyMediaType = response.getContent().get("multipart/form-data");
+        if (anyMediaType != null) {
+            if (anyMediaType.getSchema() == null) {
+                final Schema schema = new Schema();
+                schema.setType("string");
+                schema.setFormat("binary");
+                anyMediaType.setSchema(schema);
+            }
+        }
+
         return Optional.of(response);
     }
 
