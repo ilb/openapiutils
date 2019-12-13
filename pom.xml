@@ -7,6 +7,7 @@
     <packaging>jar</packaging>
     <name>openapiutils</name>
     <description>openapiutils objects</description>
+    <url>https://github.com/ilb/openapiutils</url>
     <licenses>
         <license>
             <name>Apache 2.0</name>
