@@ -21,6 +21,7 @@ import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.Json;
+import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
+import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import ru.ilb.openapiutils.config.Config;
 import ru.ilb.openapiutils.config.ConfigFactory;
 
@@ -44,7 +46,7 @@ public class ModelConverterImpl implements ModelConverter {
     @Override
     public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
         JavaType _type = Json.mapper().constructType(type.getType());
-        Class<?> cls = _type != null ? _type.getRawClass() : null;
+        Class cls = _type != null ? _type.getRawClass() : null;
 
         if (cls != null) {
             LOG.log(Level.FINE, "resolve class={0}", cls.getCanonicalName());
@@ -60,7 +62,18 @@ public class ModelConverterImpl implements ModelConverter {
                 }
             }
         }
-        // multipart/form-data
+        if (cls != null && MultipartBody.class.isAssignableFrom(cls)) {
+            Schema schema = new Schema();
+            schema.setType("object");
+            //schema.additionalProperties(new Schema().type("object"));
+            //schema.additionalProperties(new Schema().type("string"));
+            // multi file upload
+            //schema.addProperties("file", new ArraySchema().type("array").items(new Schema().type("string").format("binary")));
+            // single file upload
+            schema.addProperties("file", new Schema().type("string").format("binary"));
+            return schema;
+        }
+        // multipart/form-data annotation
         Multipart multipart = AnnotationsUtils.getAnnotation(Multipart.class, type.getCtxAnnotations());
         if (multipart != null) {
             Schema schema = chain.next().resolve(type, context, chain);

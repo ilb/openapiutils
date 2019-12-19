@@ -7,7 +7,7 @@
     <packaging>jar</packaging>
     <name>openapiutils</name>
     <description>openapiutils objects</description>
-    <url>https://github.com/ilb/openapiutils</url>
+    <url>https://svn.ilb.ru/viewvc/openapiutils</url>
     <licenses>
         <license>
             <name>Apache 2.0</name>
@@ -68,11 +68,11 @@
             <version>${swagger-version}</version>
             <scope>provided</scope>
         </dependency>-->
-        <dependency>
+        <!--        <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-wadl2java-plugin</artifactId>
             <version>${apache-cxf.version}</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -99,4 +99,27 @@
             </plugins>
         </pluginManagement>
     </build>
+    <profiles>
+        <profile>
+            <id>release-profile</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
