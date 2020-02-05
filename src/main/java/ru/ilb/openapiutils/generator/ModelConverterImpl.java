@@ -21,22 +21,21 @@ import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.Json;
-import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import ru.ilb.openapiutils.config.Config;
 import ru.ilb.openapiutils.config.ConfigFactory;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  *
  * @author slavb
  */
+// TODO: separate all conditions to different ModelConverters
 public class ModelConverterImpl implements ModelConverter {
 
     static final Logger LOG = Logger.getLogger(ModelConverterImpl.class.getName());
@@ -45,6 +44,15 @@ public class ModelConverterImpl implements ModelConverter {
 
     @Override
     public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
+        //  Uses XmlElement's type instead of declared.
+        //  Needs to work with XmlJavaTypeAdapter, which marshals declared type to type, specified in XmlElement annotation
+        if (type.isSchemaProperty()) {
+            XmlElement xmlElementAnnotation = AnnotationsUtils.getAnnotation(XmlElement.class, type.getCtxAnnotations());
+            if (xmlElementAnnotation != null && !xmlElementAnnotation.type().isAssignableFrom(XmlElement.DEFAULT.class)) {
+                type = new AnnotatedType(xmlElementAnnotation.type());
+            }
+        }
+
         JavaType _type = Json.mapper().constructType(type.getType());
         Class cls = _type != null ? _type.getRawClass() : null;
 
