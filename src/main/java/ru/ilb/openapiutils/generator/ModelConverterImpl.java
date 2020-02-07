@@ -16,13 +16,17 @@
 package ru.ilb.openapiutils.generator;
 
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
+
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
@@ -47,9 +51,15 @@ public class ModelConverterImpl implements ModelConverter {
         //  Uses XmlElement's type instead of declared.
         //  Needs to work with XmlJavaTypeAdapter, which marshals declared type to type, specified in XmlElement annotation
         if (type.isSchemaProperty()) {
-            XmlElement xmlElementAnnotation = AnnotationsUtils.getAnnotation(XmlElement.class, type.getCtxAnnotations());
-            if (xmlElementAnnotation != null && !xmlElementAnnotation.type().isAssignableFrom(XmlElement.DEFAULT.class)) {
-                type = new AnnotatedType(xmlElementAnnotation.type());
+            XmlElement typeXmlElementAnnotation = AnnotationsUtils.getAnnotation(XmlElement.class, type.getCtxAnnotations());
+            if (typeXmlElementAnnotation != null && !typeXmlElementAnnotation.type().isAssignableFrom(XmlElement.DEFAULT.class)) {
+                TypeFactory typeFactory = TypeFactory.defaultInstance();
+                if (type.getType().getClass().isAssignableFrom(CollectionType.class)) {
+                    CollectionType newCollectionType = typeFactory.constructCollectionType(List.class, typeXmlElementAnnotation.type());
+                    type.setType(newCollectionType);
+                } else {
+                    type.setType(typeFactory.constructSimpleType(typeXmlElementAnnotation.type(), null));
+                }
             }
         }
 
