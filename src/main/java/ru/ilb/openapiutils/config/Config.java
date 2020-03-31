@@ -34,6 +34,16 @@ public class Config {
     private boolean autoTags;
 
     /**
+     * list of media types marked as binary format in spec. required for proper javascript client generation
+     */
+    private List<String> binaryMediaTypes;
+
+    /**
+     * list of media types marked as object type in spec. required for proper javascript client generation
+     */
+    private List<String> objectMediaTypes;
+
+    /**
      * remove unreferenced schemas/classes. Parameter for OpenAPISpecFilterImpl
      */
     private boolean removeUnreferencedDefinitions;
@@ -52,6 +62,22 @@ public class Config {
 
     public void setAutoTags(boolean autoTags) {
         this.autoTags = autoTags;
+    }
+
+    public List<String> getBinaryMediaTypes() {
+        return binaryMediaTypes;
+    }
+
+    public void setBinaryMediaTypes(List<String> binaryMediaTypes) {
+        this.binaryMediaTypes = binaryMediaTypes;
+    }
+
+    public List<String> getObjectMediaTypes() {
+        return objectMediaTypes;
+    }
+
+    public void setObjectMediaTypes(List<String> objectMediaTypes) {
+        this.objectMediaTypes = objectMediaTypes;
     }
 
     public boolean isRemoveUnreferencedDefinitions() {

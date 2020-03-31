@@ -57,7 +57,7 @@ public class OpenAPISpecFilterImpl implements OpenAPISpecFilter {
     @Override
     public Optional<Operation> filterOperation(Operation operation, ApiDescription api, Map<String, List<String>> params, Map<String, String> cookies, Map<String, List<String>> headers) {
 
-        if (config.getAutotags() && (operation.getTags()==null || operation.getTags().isEmpty()) && api.getPath() != null) {
+        if (config.getAutotags() && (operation.getTags() == null || operation.getTags().isEmpty()) && api.getPath() != null) {
             String[] pathItems = api.getPath().split("/");
             if (pathItems.length > 1) {
                 String tag = pathItems[1];
@@ -108,27 +108,26 @@ public class OpenAPISpecFilterImpl implements OpenAPISpecFilter {
      */
     @Override
     public Optional<ApiResponse> filterResponse(ApiResponse response, Operation operation, ApiDescription api, Map<String, List<String>> params, Map<String, String> cookies, Map<String, List<String>> headers) {
-        MediaType mt = response.getContent().get("application/json");
-        if (mt != null) {
-            if (mt.getSchema() == null) {
-                Schema schema = new Schema();
-                schema.setType("object");
-                mt.setSchema(schema);
-            }
-//            if (mt.getSchema() != null && mt.getSchema().get$ref() == null && mt.getSchema().getType()==null) {
-//                mt.getSchema().setType("object");
-//            }
-        }
+        // fix spec for object media types, e.g. json
+        config.getObjectMediaTypes().stream()
+                .map(mts -> response.getContent().get(mts))
+                .filter(mt -> mt != null && mt.getSchema() == null)
+                .forEach(mt -> {
+                    Schema schema = new Schema();
+                    schema.setType("object");
+                    mt.setSchema(schema);
+                });
 
-        final MediaType binaryMediaType = response.getContent().get("application/octet-stream");
-        if (binaryMediaType != null) {
-            if (binaryMediaType.getSchema() == null) {
-                final Schema schema = new Schema();
-                schema.setType("string");
-                schema.setFormat("binary");
-                binaryMediaType.setSchema(schema);
-            }
-        }
+        // fix spec for binary media types
+        config.getBinaryMediaTypes().stream()
+                .map(mts -> response.getContent().get(mts))
+                .filter(mt -> mt != null && mt.getSchema() == null)
+                .forEach(mt -> {
+                    final Schema schema = new Schema();
+                    schema.setType("string");
+                    schema.setFormat("binary");
+                    mt.setSchema(schema);
+                });
 
         return Optional.of(response);
     }

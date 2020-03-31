@@ -35,6 +35,8 @@ public class ConfigFactory {
         Config config = new Config();
         config.setIgnorePackage(getListProperty("ignorePackage", null));
         config.setAutoTags(getBooleanProperty("autoTags", true));
+        config.setBinaryMediaTypes(getListProperty("binaryMediaTypes", Arrays.asList("application/octet-stream","*/*")));
+        config.setObjectMediaTypes(getListProperty("objectMediaTypes", Arrays.asList("application/json")));
         config.setRemoveUnreferencedDefinitions(getBooleanProperty("removeUnreferencedDefinitions", false));
 
         LOG.log(Level.FINE, config.toString());
