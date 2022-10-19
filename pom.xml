@@ -34,7 +34,7 @@
         <apache-cxf.version>3.3.3</apache-cxf.version>
         <javax-xml-bind-jaxb-api.version>2.3.1</javax-xml-bind-jaxb-api.version>
         <swagger-version>2.1.0</swagger-version>
-        <jackson-version>2.10.1</jackson-version>
+        <jackson-version>2.13.4.1</jackson-version>
     </properties>
     <dependencies>
         <dependency>
